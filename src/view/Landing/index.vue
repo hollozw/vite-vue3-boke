@@ -74,6 +74,9 @@ const form = ref<IForm>({
 });
 const btn = ref<Array<string>>(["登录", "注册"]);
 
+/**
+ * 提交密码
+ */
 async function submit(v) {
   const { name, password, rePassword } = v.value;
   if (password !== rePassword) {
@@ -89,15 +92,16 @@ async function submit(v) {
     ElMessage.error("输入的信息错误");
     return;
   }
-  console.log(data.result);
+  store.state.user_data = data.result
+  localStorage.setItem("token", data.token);
   ElMessage.success(`欢迎，${data.result.user_name}`);
   router.push("./home");
 }
 
 // 游客登陆功能
 function submitYou() {
-  console.log(store.state.count)
-  store.commit('idChang')
+  console.log(store.state.count);
+  store.commit("idChang");
   router.push("./home");
 }
 

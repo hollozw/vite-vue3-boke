@@ -1,16 +1,12 @@
-import {createStore} from 'vuex'
+import { createStore } from "vuex";
 
 const store = createStore({
-  state(){
+  state() {
     return {
-      id: 0 // 用户id信息
-    }
+      user_data: { id: -1, userName: "游客" }, // 用户id信息
+    };
   },
-  mutations: {
-    idChang(state) {
-      state.id++
-    }
-  }
-})
+  mutations: {},
+});
 
-export default store
+export default store;

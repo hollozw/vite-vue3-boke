@@ -5,6 +5,8 @@ import TouXiang from "@/assets/imgs/title.jpg";
 import searchBgc from "@/assets/imgs/home-sreach-bgi.jpg";
 import { useRouter } from "vue-router";
 import { onMounted, ref, reactive } from "vue";
+import store from "@/store";
+import { ElMessage } from "element-plus";
 const router = useRouter();
 const arrList = reactive<Array<IArrList>>([
   { code: 1, title: "标题1", nav: "内容1", image: "图像1" },
@@ -34,6 +36,14 @@ function enterDetails(v: string | number) {
 }
 
 function ourHome() {
+  const { id } = store.state.user_data;
+  if (id === -1) {
+    ElMessage.error("目前为游客登录");
+    router.push({
+      path: "/land",
+    });
+    return;
+  }
   router.push({
     path: "/OurInformation",
     query: {
@@ -63,7 +73,9 @@ function scrollBottom(): void {
     <div class="ourself-left">
       <div class="outLine">
         <div class="left-title">
-          <h2 class="title">{{ this.$store.state.id }}</h2>
+          <h2 class="title">
+            {{ this.$store.state.user_data.userName || "游客" }}
+          </h2>
         </div>
         <div class="left-img">
           <img :src="TouXiang" />
