@@ -1,0 +1,67 @@
+$width: 20%
+
+.box-sizing
+  box-sizing: border-box
+.width
+  width: 100%
+
+.BokeData
+  height: 100vh
+  border: 1px solid #ccc
+  padding: 20px
+  .BokeData-box
+    background-color: white
+    height: 100%
+    border-radius: 20px
+    padding: 15px
+    display: flex
+    .box-left
+      width: $width
+      height: 100%
+      background-color: #cccc
+      border-radius: 20px
+      .left-list-top
+        width: 100%
+        height: 50px
+        border-bottom: 1px solid #cccc
+        font-size: 14px
+        text-align: center
+        line-height: 50px
+      .left-list-ul
+        height: calc( 100% - 50px )
+        overflow: auto
+        .left-list-li
+          padding: 0 20px
+          height: 7%
+          border-bottom: 1px solid #ccc
+          display: flex
+          justify-content: left
+          align-items: center
+          cursor: pointer
+          div
+            width: 100%
+            overflow: hidden
+            transition: 0.5s all
+            &:hover
+              color: rgb(5,109,232)
+        .left-list-li-hid
+          color: rgb(5,109,232)
+          background-color: #b6b6b6
+    .box-right
+      width: 100% - $width
+      height: 100%
+      overflow: auto
+      padding: 10px
+      .right-box
+        width: 100%
+        height: 100%
+        border-radius: 20px
+        border: 1px solid #ccc
+        overflow: auto
+        .right-nav
+          width: 100%
+          height: 100%
+          padding: 20px
+        .right-loading
+          width: 100%
+          height: 100%
