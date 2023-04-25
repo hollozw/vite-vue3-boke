@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>父组件</div>
+    <div>1234</div>
     <div>{{ fu }}</div>
     <Zi ref="zi" :data = 'data' @sendParent="fuFun"></Zi>
   </div>
