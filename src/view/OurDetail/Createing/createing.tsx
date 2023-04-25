@@ -1,4 +1,4 @@
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, reactive, ref, getCurrentInstance, onMounted } from "vue";
 import "./index.sass";
 export default defineComponent({
   setup() {
@@ -8,7 +8,9 @@ export default defineComponent({
       nav: "",
     });
     const disBool = ref(false);
+    const upload = ref(null);
     const propsBool = ref(false);
+    const instance = getCurrentInstance();
     const options = reactive([
       {
         value: "选项1",
@@ -18,24 +20,16 @@ export default defineComponent({
         value: "选项2",
         label: "双皮奶",
       },
-      {
-        value: "选项3",
-        label: "蚵仔煎",
-      },
-      {
-        value: "选项4",
-        label: "龙须面",
-      },
-      {
-        value: "选项5",
-        label: "北京烤鸭",
-      },
     ]);
     const value = ref("");
-
+    onMounted(()=>{
+      upLoad()
+    })
     function upLoad() {
-      propsBool.value = true;
-      console.log(1);
+      // propsBool.value = true;
+
+      console.log(instance);
+      console.log(disBool);
     }
     function rendeTopOther() {
       return (
@@ -62,17 +56,17 @@ export default defineComponent({
         >
           <el-upload
             class="upload-demo"
+            ref={upload}
             drag
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="/api/boke/uploadfile"
             multiple
+            auto-upload={false}
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
               将文件拖到此处，或<em>点击上传</em>
             </div>
-            <div class="el-upload__tip">
-              只能上传jpg/png文件，且不超过500kb
-            </div>
+            <div class="el-upload__tip">上传md文件</div>
           </el-upload>
           <div class={["right-topsOther-btn-config"]}>
             <button onClick={upLoad}>上传</button>

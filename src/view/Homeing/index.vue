@@ -7,6 +7,7 @@ import { useRouter } from "vue-router";
 import { onMounted, ref, reactive } from "vue";
 import store from "@/store";
 import { ElMessage } from "element-plus";
+import { bokeList } from "@/utils/axios";
 const router = useRouter();
 const arrList = reactive<Array<IArrList>>([
   { code: 1, title: "标题1", nav: "内容1", image: "图像1" },
@@ -20,12 +21,28 @@ const arrList = reactive<Array<IArrList>>([
   { code: 9, title: "标题9", nav: "内容9", image: "图像9" },
   { code: 10, title: "标题10", nav: "内容10", image: "图像10" },
 ]);
+const keyWord = ref("");
+const typeNumber = ref("");
+const people = ref("");
 
 onMounted(() => {
   scrollBottom();
+  bokeListSearch();
 });
 
 // method
+/**
+ * 个人博客列表展示和搜索页面
+ */
+async function bokeListSearch() {
+  const parmas = {
+    typeNumber: typeNumber.value,
+    keyWord: keyWord.value,
+    people: people.value,
+  };
+  const res = await bokeList(parmas);
+}
+
 function enterDetails(v: string | number) {
   router.push({
     path: "/datil",
@@ -96,9 +113,18 @@ function scrollBottom(): void {
       <h1 class="search-h1">SearchIng</h1>
       <div class="right-search">
         <div class="search">
-          <input type="text" />
+          <input type="text" v-model="keyWord" />
         </div>
-        <div class="search-btn">搜索</div>
+        <div
+          class="search-btn"
+          @click="
+            () => {
+              bokeListSearch();
+            }
+          "
+        >
+          搜索
+        </div>
       </div>
 
       <!-- list内容 -->
