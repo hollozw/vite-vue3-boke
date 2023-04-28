@@ -32,3 +32,11 @@ export function bokeList(data) {
     data,
   });
 }
+
+export function BokeUpdate(data) {
+  return request({
+    url: '/boke/uploadfile',
+    method: 'POST',
+    data,
+  })
+}

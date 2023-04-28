@@ -1,5 +1,21 @@
-import { defineComponent, reactive, ref, getCurrentInstance, onMounted } from "vue";
+import {
+  defineComponent,
+  reactive,
+  ref,
+  getCurrentInstance,
+  onMounted,
+} from "vue";
 import "./index.sass";
+import { BokeUpdate } from "@/utils/axios";
+
+interface IFileList<T> {
+  arrlist: Array<T>;
+}
+interface IFileListT {
+  name?: string;
+  url?: string;
+}
+
 export default defineComponent({
   setup() {
     const forms = reactive({
@@ -7,10 +23,12 @@ export default defineComponent({
       select: "",
       nav: "",
     });
+    const header = { ContentType: "multipart/form-data" };
     const disBool = ref(false);
     const upload = ref(null);
     const propsBool = ref(false);
-    const instance = getCurrentInstance();
+    const { proxy } = getCurrentInstance();
+    const value = ref("");
     const options = reactive([
       {
         value: "选项1",
@@ -21,16 +39,17 @@ export default defineComponent({
         label: "双皮奶",
       },
     ]);
-    const value = ref("");
-    onMounted(()=>{
-      upLoad()
-    })
+    onMounted(() => {});
     function upLoad() {
       // propsBool.value = true;
-
-      console.log(instance);
-      console.log(disBool);
+      // proxy.$refs.upload.submit();
     }
+    function onUploadChange(file) {
+      console.log(file)
+      const parmas = file.raw;
+      BokeUpdate(parmas);
+    }
+
     function rendeTopOther() {
       return (
         <div
@@ -56,11 +75,12 @@ export default defineComponent({
         >
           <el-upload
             class="upload-demo"
-            ref={upload}
+            ref="upload"
             drag
             action="/api/boke/uploadfile"
-            multiple
+            onChange={onUploadChange}
             auto-upload={false}
+            headers={header}
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">

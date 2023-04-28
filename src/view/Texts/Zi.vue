@@ -16,6 +16,9 @@ const props = defineProps({
 
 const a = ref('子组件中的a数据string')
 const emit = defineEmits(['sendParent'])
+function test () {
+  return '子重数据'
+}
 const ZiFun = function () {
   emit('sendParent', '子组件的数据')
 }

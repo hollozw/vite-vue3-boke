@@ -11,8 +11,13 @@ export default defineConfig({
       "@": path.resolve("./src"),
     },
   },
+
   server: {
     open: true,
+    host: "0.0.0.0",
+    port: 8888,
+    // 是否开启 https
+    https: false,
     proxy: {
       "/api": {
         target: "http://localhost:8000",

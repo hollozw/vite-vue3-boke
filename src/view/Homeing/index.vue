@@ -15,11 +15,6 @@ const arrList = reactive<Array<IArrList>>([
   { code: 3, title: "标题3", nav: "内容3", image: "图像3" },
   { code: 4, title: "标题4", nav: "内容4", image: "图像4" },
   { code: 5, title: "标题5", nav: "内容5", image: "图像5" },
-  { code: 6, title: "标题6", nav: "内容6", image: "图像6" },
-  { code: 7, title: "标题7", nav: "内容7", image: "图像7" },
-  { code: 8, title: "标题8", nav: "内容8", image: "图像8" },
-  { code: 9, title: "标题9", nav: "内容9", image: "图像9" },
-  { code: 10, title: "标题10", nav: "内容10", image: "图像10" },
 ]);
 const keyWord = ref("");
 const typeNumber = ref("");
@@ -28,6 +23,7 @@ const people = ref("");
 onMounted(() => {
   scrollBottom();
   bokeListSearch();
+  console.log(store.state.user_data)
 });
 
 // method

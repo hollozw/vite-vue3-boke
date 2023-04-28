@@ -94,7 +94,8 @@ async function submit(v) {
   }
   store.state.user_data = data.result
   localStorage.setItem("token", data.token);
-  ElMessage.success(`欢迎，${data.result.user_name}`);
+  ElMessage.success(`欢迎，${data.result.userName}`);
+  console.log(store.state.user_data)
   router.push("./home");
 }
 
