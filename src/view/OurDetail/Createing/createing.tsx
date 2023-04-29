@@ -6,7 +6,8 @@ import {
   onMounted,
 } from "vue";
 import "./index.sass";
-import { BokeUpdate } from "@/utils/axios";
+import { addBokeList } from "@/utils/axios";
+import store from "@/store";
 
 interface IFileList<T> {
   arrlist: Array<T>;
@@ -18,6 +19,7 @@ interface IFileListT {
 
 export default defineComponent({
   setup() {
+    const { proxy } = getCurrentInstance();
     const forms = reactive({
       title: "",
       select: "",
@@ -26,30 +28,68 @@ export default defineComponent({
     const header = { ContentType: "multipart/form-data" };
     const disBool = ref(false);
     const upload = ref(null);
+    const Proptitle = ref("");
     const propsBool = ref(false);
-    const { proxy } = getCurrentInstance();
-    const value = ref("");
+    const PropTypeValue = ref("");
     const options = reactive([
       {
-        value: "选项1",
-        label: "黄金糕",
+        value: "0",
+        label: "vue",
       },
       {
-        value: "选项2",
-        label: "双皮奶",
+        value: "1",
+        label: "node",
+      },
+      {
+        value: "2",
+        label: "react",
+      },
+      {
+        value: "3",
+        label: "html",
       },
     ]);
     onMounted(() => {});
     function upLoad() {
-      // propsBool.value = true;
-      // proxy.$refs.upload.submit();
-    }
-    function onUploadChange(file) {
-      console.log(file)
-      const parmas = file.raw;
-      BokeUpdate(parmas);
+      propsBool.value = true;
     }
 
+    /**
+     * 文件上传函数
+     */
+    async function fileUpload() {
+      if (PropTypeValue.value === "" || Proptitle.value === "") {
+        console.log("请输入相关信息");
+        return;
+      } else if (store.state.user_data.userName === "") {
+        console.log("请登录");
+        return;
+      }
+      try {
+        proxy.$refs.upload.submit();
+      } catch (err) {
+        console.log(err);
+        return;
+      }
+    }
+    async function fileList(data) {
+      if ((data.message = "success")) {
+        const { userName } = store.state.user_data;
+        const params = {
+          anthor: userName,
+          type: PropTypeValue.value,
+          title: Proptitle.value,
+        };
+        const res = await addBokeList(params);
+        console.log(res.data);
+      }
+    }
+
+
+
+    /**
+     * 渲染DOM元素
+     */
     function rendeTopOther() {
       return (
         <div
@@ -78,9 +118,9 @@ export default defineComponent({
             ref="upload"
             drag
             action="/api/boke/uploadfile"
-            onChange={onUploadChange}
             auto-upload={false}
             headers={header}
+            on-success={fileList}
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -105,6 +145,7 @@ export default defineComponent({
       );
     }
 
+    // 弹窗渲染
     function renderPorp() {
       return (
         <div
@@ -113,31 +154,57 @@ export default defineComponent({
             display: propsBool.value ? "block" : "none",
             cursor: "pointer",
           }}
-          onClick={() => {
-            propsBool.value = false;
-          }}
         >
           <div class={"props-window"}>
             <div class={["windows"]}>
-              <el-select v-model={value.value} placeholder="请选择类型">
-                {options.map((item, index) => {
-                  return (
-                    <el-option
-                      key={item.value}
-                      label={item.label}
-                      value={item.value}
-                    ></el-option>
-                  );
-                })}
-              </el-select>
-              <div class={["window-sure"]}>
-                <button>确认</button>
+              <div class={["windows-input"]}>
+                <div class={["input-font"]}>请输入关键信息</div>
+                <el-input
+                  type="text"
+                  v-model={Proptitle.value}
+                  placeholder="请输入标题"
+                ></el-input>
+                <el-select
+                  style={{ marginTop: "20px" }}
+                  v-model={PropTypeValue.value}
+                  placeholder="请选择类型"
+                >
+                  {options.map((item, index) => {
+                    return (
+                      <el-option
+                        key={item.value}
+                        label={item.label}
+                        value={item.value}
+                      ></el-option>
+                    );
+                  })}
+                </el-select>
+                <div class={["window-sure"]}>
+                  <button
+                    class={["sure"]}
+                    onClick={() => {
+                      fileUpload();
+                    }}
+                  >
+                    确认
+                  </button>
+                  <button
+                    class={["reject"]}
+                    onClick={() => {
+                      propsBool.value = false;
+                    }}
+                  >
+                    取消
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       );
     }
+
+    // 下方表单渲染
     function renderForm() {
       return (
         <div class={["createIng-form"]}>

@@ -6,15 +6,6 @@ export default defineComponent({
   setup() {
     const arr = reactive([
       { list: "1111111111111111111111111111111111111111" },
-      { list: "2" },
-      { list: "3" },
-      { list: "4" },
-      { list: "5" },
-      { list: "6" },
-      { list: "7" },
-      { list: "8" },
-      { list: "9" },
-      { list: "10" },
     ]);
     const disBoole = ref(0);
     const navBool = ref(false);

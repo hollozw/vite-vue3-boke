@@ -33,9 +33,9 @@ export function bokeList(data) {
   });
 }
 
-export function BokeUpdate(data) {
+export function addBokeList(data) {
   return request({
-    url: '/boke/uploadfile',
+    url: '/boke/addList',
     method: 'POST',
     data,
   })

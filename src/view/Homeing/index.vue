@@ -17,8 +17,8 @@ const arrList = reactive<Array<IArrList>>([
   { code: 5, title: "标题5", nav: "内容5", image: "图像5" },
 ]);
 const keyWord = ref("");
-const typeNumber = ref("");
-const people = ref("");
+const type = ref("");
+const anthor = ref("");
 
 onMounted(() => {
   scrollBottom();
@@ -32,9 +32,9 @@ onMounted(() => {
  */
 async function bokeListSearch() {
   const parmas = {
-    typeNumber: typeNumber.value,
+    type: type.value,
     keyWord: keyWord.value,
-    people: people.value,
+    anthor: anthor.value,
   };
   const res = await bokeList(parmas);
 }
