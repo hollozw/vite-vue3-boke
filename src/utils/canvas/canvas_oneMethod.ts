@@ -1,5 +1,4 @@
 import Canvas from ".";
-import { deepClone } from "../deep_code";
 
 interface IOption_Cicly {
   position: Array<Array<number>>; // 小球初始出现的位置

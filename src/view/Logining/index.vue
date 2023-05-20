@@ -66,11 +66,11 @@ import FormTable from "@/components/FormTable.vue";
 import "./logining.sass";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import {ElMessage } from 'element-plus'
-import { login,landing } from "@/utils/axios";
+import { ElMessage } from "element-plus";
+import { login, loginImg } from "@/utils/axios";
 const router = useRouter();
 components: {
-    ElMessage
+  ElMessage;
 }
 const form = ref<IForm>({
   name: "",
@@ -79,24 +79,24 @@ const form = ref<IForm>({
 });
 const btn = ref<Array<string>>(["注册", "取消"]);
 async function submit(v) {
-  const {name, password, rePassword} = v.value
-  if(password !== rePassword) {
-    ElMessage.error('确认密码需要和密码相同')
-    return
+  const { name, password, rePassword } = v.value;
+  if (password !== rePassword) {
+    ElMessage.error("确认密码需要和密码相同");
+    return;
   }
   const params = {
     username: name,
-    password
+    password,
+  };
+  const { data } = await login(params);
+  if (data.message === "success") {
+    ElMessage.success("注册成功");
   }
-  // const {data} = await landing(params)
-  // return
-  const ress = await login(params)
-  if(ress.message === 'success') {
-    ElMessage.success('注册成功')
-  }
-  setTimeout(()=>{
-    close()
-  },500)
+  const { id, user_name } = data.result;
+  await loginImg({ id, user_name });
+  setTimeout(() => {
+    close();
+  }, 500);
 }
 
 // 动画效果的函数
@@ -121,8 +121,6 @@ function recover() {
 }
 
 onMounted(() => {
-  recover()
+  recover();
 });
-
-
 </script>

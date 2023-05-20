@@ -7,7 +7,7 @@ import OurDetail from "@/view/OurDetail";
 import BokeData from "@/view/OurDetail/BokeData";
 import Createing from "@/view/OurDetail/Createing";
 import OurInformation from "@/view/OurDetail/OurInformation";
-import Test from "@/view/Texts";
+import changePhoto from "@/view/ChangePhoto";
 
 const routes: any = [
   { path: "/", redirect: "/land" },
@@ -25,6 +25,6 @@ const routes: any = [
       { path: "/OurInformation", component: OurInformation },
     ],
   },
-  { path: "/test", component: Test },
+  { path: "/changePhoto", component: changePhoto },
 ];
 export default routes;

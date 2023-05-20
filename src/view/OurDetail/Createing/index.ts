@@ -1,1 +1,2 @@
-export {default} from './createing'
+export { default } from "./index.vue";
+// export {default} from './createing'

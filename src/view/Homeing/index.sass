@@ -1,15 +1,28 @@
 $tabbar-height: 60px
 $left-height: 15%
+.canvasPartical
+  width: 100%
+  height: 100vh
+  position: fixed
+  .canvas
+    width: 100%
+    height: 100%
+    background-color: black
+    img
+      width: 100%
+      height: 100%
 .home
   display: flex
-  background-color: #cccc
+  position: relative
+  z-index: 100
   .outLine
     height: 100%
-    background-color: rgb(96, 202, 115)
+    background-color: #f7f7f7
     border-radius: 10px
   .ourself-left
-    width: 30%
-    height: 100vh
+    opacity: 0.8
+    width: 20%
+    height: 55vh
     box-sizing: border-box
     padding: 15px
     display: flex
@@ -25,8 +38,14 @@ $left-height: 15%
       h2
         text-align: center
         width: 100%
-        color: #fff
+        color: #2f2f33
         cursor: pointer
+        font-size: 20px
+        transition: all 0.5s
+        cursor: pointer
+        &:hover
+          font-size: 21px
+          color: #000000
     .left-img
       width: 100%
       height: 2 * $left-height
@@ -35,32 +54,23 @@ $left-height: 15%
       flex-direction: column
       justify-content: center
       align-items: center
+      margin-top: 20px
+      cursor: pointer
+      transition: all 0.5s
       img
-        width: 150px
-        height: 150px
-        border-radius: 75px
-        border: 4px double #cccc
-      img:hover
-        background-color: #ccc
-    .left-saying
-      width: 100%
-      height: 2 * $left-height
-      box-sizing: border-box
-      padding: 30px
-      border-top: 1px solid #ccc
-      .saying
+        width: 120px
+        height: 120px
+        border: 1px double #cccc
+          
+      .img-font
+        margin-top: 10px
         width: 100%
-        height: 100%
-        word-wrap: break-word
+        height: 20px
+        line-height: 20px
         text-align: center
-        overflow: hidden
-        color: #efefef
-        transition: all 1s
-        cursor: pointer
-      .saying:hover
-        color: black
     .left-myself
       width: 100%
+      margin-top: 50px
       height: $left-height
       box-sizing: border-box
       display: flex
@@ -73,17 +83,16 @@ $left-height: 15%
         line-height: 40px
         text-align: center
         cursor: pointer
-        background-color: #00a305
+        background-color: #409EFF
         border-radius: 5px
         color: white
         transition: all 1s
-        border: 1px solid #00a305
+        border: 1px solid #1a8cfe
       .myself-btn:hover
-        background-color: rgb(96,202,115)
-        color: black
+        background-color: #82c1ff
         border: 1px solid blcak
-  .ourself-right
-    width: 70%
+  .ourself-center
+    width: 60%
     height: 100vh
     padding-right: 15px
     box-sizing: border-box
@@ -91,63 +100,75 @@ $left-height: 15%
     position: relative
     overflow: auto
     .right-bgi
+      opacity: 0.9
       width: 100%
       height: 500px
       overflow: hidden
       border-radius: 15px
-      img
+      border: 1px solid black
+      box-sizing: border-box
+      position: relative
+      .bgi
+        position: relative
         width: 100%
         height: 100%
-    .search-h1
-      position: absolute
-      width: 300px
-      height: 50px
-      line-height: 50px
-      top: 0
-      text-align: center
-      margin-top: calc( 15% - 25px )
-      margin-left: calc( 50% - 150px )
-      color: #333
+        img
+          width: 100%
+          height: 100%
     .right-search
-      width: 400px
-      height: 60px
+      width: 100%
+      height: 100%
       box-sizing: border-box
       position: absolute
       top: 0
-      margin-top: calc( 25% - 30px )
-      margin-left: calc( 50% - 200px )
-      display: flex
-      .search
-        width: 340px
-        height: 60px
-        border-radius: 5px 0 0 5px
-        input
-          padding-left: 10px
-          width: 100%
-          height: 100%
-          box-sizing: border-box
-          font-size: 18px
+      z-index: 999
+      .search-flex
+        width: 100%
+        height: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        .search
+          width: 350px
+          height: 50px
+          border-radius: 5px 0 0 5px
+          input
+            padding-left: 10px
+            width: 100%
+            height: 100%
+            box-sizing: border-box
+            font-size: 18px
+            border: 1px solid #cccc
+            border-right: 0px solid #cccc
+            color: #282828cc
+            outline: none
+            transition: all 0.5s
+            &:focus
+              border: 1px solid #409EFF
+        .search-btn
+          width: 50px
+          height: 50px
+          background-color: #409EFF
+          border-radius: 0 5px 5px 0
           border: 1px solid #cccc
-          border-right: 0px solid #cccc
-          color: #282828cc
-      .search-btn
-        width: 60px
-        height: 60px
-        background-color: rgb(96,202,115)
-        border-radius: 0 5px 5px 0
-        border: 1px solid #cccc
-        border-left: 0px solid #cccc
-        box-sizing: border-box
-        cursor: pointer
-        text-align: center
-        line-height: 60px
-        color: white
-        transition: all 1s
-        &:hover
-          color: #444
+          border-left: 0px solid #cccc
+          box-sizing: border-box
+          cursor: pointer
+          text-align: center
+          line-height: 50px
+          color: white
+          transition: all 0.5s
+          &:hover
+            border: 1px solid #409EFF
+            background-color: #82c1ff
+          &:active
+            width: 55px
+            height: 55px
 
     .right-list
-      background-color: white
+      opacity: 0.8
+
+      background-color: #f7f7f7
       width: 100%
       box-sizing: border-box
       border: 1px solid black
@@ -159,12 +180,12 @@ $left-height: 15%
         width: 100%
         margin: 0 auto
         border-top: 0px solid #ccc
-        background-color: white
+        background-color: #f7f7f7
         box-sizing: border-box
         overflow: auto
         .list-information
           width: 100%
-          height: 120px
+          height: 90px
           box-sizing: border-box
           padding: 12px 20px 0 20px
           &:hover
@@ -193,9 +214,24 @@ $left-height: 15%
                 padding-top: 10px
                 box-sizing: border-box
                 overflow: hidden
-                font-size: 18px
+                font-size: 14px
                 text-overflow: ellipsis
                 white-space: nowrap
             .information-text-img
               width: 150px
               height: 100%
+  .ourself-right
+    opacity: 0.8
+    width: 20%
+    height: 60vh
+    box-sizing: border-box
+    padding-top: 15px
+    padding-right: 15px
+  .right-div
+    background-color: #f7f7f7
+    width: 100%
+    height: 100%
+    border: 1px solid black
+    box-sizing: border-box
+    border-radius: 5px
+    padding: 10px

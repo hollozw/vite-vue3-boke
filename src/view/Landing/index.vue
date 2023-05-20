@@ -88,20 +88,21 @@ async function submit(v) {
     password,
   };
   const { data } = await landing(params);
+  const url = data.result.user_href
   if (data.message !== "success") {
     ElMessage.error("输入的信息错误");
     return;
   }
   store.state.user_data = data.result
+  store.state.user_href = url
   localStorage.setItem("token", data.token);
+  localStorage.setItem('ImgSrc', url)
   ElMessage.success(`欢迎，${data.result.userName}`);
-  console.log(store.state.user_data)
   router.push("./home");
 }
 
 // 游客登陆功能
 function submitYou() {
-  console.log(store.state.count);
   store.commit("idChang");
   router.push("./home");
 }
@@ -127,22 +128,6 @@ function recover() {
   card_login.style.transform = "translateX(0%)";
   div.style.transform = "translateX(0%)";
 }
-
-// function bgc_canvas() {
-//   const options_cicly = {
-//     position: [[0,200],[0,200]],
-//     size: 20,
-//     max_x_v: 10,
-//     max_y_v: 10,
-//     numbers: 30
-//   }
-//   const canvas = new Canvas_cicly_Round("login-canvas", ".bg-canvas",options_cicly);
-//   run()
-//   function run() {
-//     canvas.Cicly_action()
-//     window.requestAnimationFrame(run)
-//   }
-// }
 
 onMounted(() => {
   recover();

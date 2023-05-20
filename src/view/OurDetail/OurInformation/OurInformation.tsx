@@ -1,10 +1,19 @@
-import { defineComponent, onMounted } from "vue";
+import { ref, defineComponent, onMounted, reactive } from "vue";
 import "./index.sass";
 import * as echarts from "echarts";
-
+import { getbokeList } from "@/utils/axios";
+import store from "@/store";
+import { circleOptions } from "@/utils/bokeType";
+import { useRouter } from "vue-router";
 export default defineComponent({
   setup() {
-    function bokeEchart() {
+    const router = useRouter();
+    let bokeNumber = ref(0);
+    let op = reactive({
+      value: circleOptions,
+    }); // echart图表信息参数
+    let Time = ref(""); // 时间
+    function bokeEchart(data) {
       const myChart = echarts.init(
         document.getElementById("boke-information-echart")
       );
@@ -41,40 +50,72 @@ export default defineComponent({
             labelLine: {
               show: false,
             },
-            data: [
-              { value: 1048, name: "Search Engine" },
-              { value: 735, name: "Direct" },
-              { value: 580, name: "Email" },
-              { value: 484, name: "Union Ads" },
-              { value: 300, name: "Video Ads" },
-            ],
+            data,
           },
         ],
       });
     }
+
     onMounted(() => {
-      bokeEchart();
+      getBokeList();
     });
+
+    async function getBokeList() {
+      const user_name = store.state.user_data.userName;
+      const params = {
+        type: "",
+        title: "",
+        user_name,
+      };
+      const { data } = await getbokeList(params);
+      op.value.forEach((item, index) => {
+        item.value = 0;
+      });
+      if (data.message[0] === "success") {
+        bokeNumber.value = data.data.length;
+        data.data.forEach((item, index) => {
+          let number = Number(item.type);
+          op.value[number].value++;
+        });
+        bokeEchart(op.value);
+      }
+    }
+
     return () => {
       return (
         <div class={["ourInformation", "box-sizing"]}>
           <div class={["ourInformation-box"]}>
             <div class={["box-top", "box-sizing"]}>
-              <div class={["box-top-img"]}>
-                <img src="#" />
+              <div
+                class={["box-top-img"]}
+                onClick={() => {
+                  router.push({
+                    path: "changePhoto",
+                  });
+                }}
+              >
+                <img src={store.state.user_href} />
               </div>
               <div class={["box-top-information", "box-sizing"]}>
                 <div class={["information-name", "box-sizing"]}>
-                  用户名：<span>username</span>
+                  当前用户名：<span>{store.state.user_data.userName}</span>
                 </div>
-                <div class={["information-nowTime", "box-sizing"]}>
-                  时间：
-                  <span style={{ color: "red" }}>2023年4月20日 19点49分</span>
+                <div class={["information-boke", "box-sizing"]}>
+                  {op.value.map((item, index) => {
+                    return (
+                      <div class={["information-boke-list"]}>
+                        {item.name}:
+                        <span style={{ paddingLeft: "10px" }}>
+                          {item.value}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               <div class={["bokeNumber"]}>
-                <div class={["bokeNumber-num"]}>123</div>
-                <div class={["bokeNumber-get"]}>博客数量</div>
+                <div class={["bokeNumber-num"]}>{bokeNumber.value}</div>
+                <div class={["bokeNumber-get"]}>所写博客数量</div>
               </div>
             </div>
             <div class={["box-nav", "box-sizing"]}>

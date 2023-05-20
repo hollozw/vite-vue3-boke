@@ -11,7 +11,7 @@
           size="medium"
           v-model="forms.name"
           maxlength="10"
-          placeholder="admin"
+          placeholder="请输入用户名"
         ></el-input>
       </el-form-item>
       <el-form-item

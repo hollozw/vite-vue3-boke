@@ -16,6 +16,30 @@ export function login(data) {
   });
 }
 
+export function loginImg(data) {
+  return request({
+    url: "/user/loginHref",
+    method: "POST",
+    data,
+  });
+}
+
+export function getUserImg(data) {
+  return request({
+    url: "/user/getHref",
+    method: "POST",
+    data,
+  });
+}
+
+export function updateUserImg(data) {
+  return request({
+    url: "/user/updateHref",
+    method: "POST",
+    data,
+  });
+}
+
 // 登录接口
 export function landing(data: IForm) {
   return request({
@@ -25,7 +49,29 @@ export function landing(data: IForm) {
   });
 }
 
-export function bokeList(data) {
+/**
+ * 用户删除
+ */
+export function userDelet(data) {
+  return request({
+    url: "/user/delete",
+    method: "POST",
+    data,
+  });
+}
+
+export function userUpdate(data) {
+  return request({
+    url: "/user/update",
+    method: "POST",
+    data,
+  });
+}
+
+/**
+ * 获取博客列表
+ */
+export function getbokeList(data) {
   return request({
     url: "/boke/List",
     method: "POST",
@@ -33,10 +79,33 @@ export function bokeList(data) {
   });
 }
 
-export function addBokeList(data) {
+export function SearchBokeList(data) {
   return request({
-    url: '/boke/addList',
-    method: 'POST',
+    url: "/boke/SearchList",
+    method: "POST",
     data,
-  })
+  });
+}
+
+/**
+ * 文件上传功能
+ */
+export function addBoke(data) {
+  return request({
+    url: "/boke/uploadfile",
+    method: "POST",
+    data,
+  });
+}
+
+/**
+ * 用户图片上传
+ */
+
+export function userImg(data) {
+  return request({
+    url: "/user/userImgName",
+    method: "POST",
+    data,
+  });
 }
