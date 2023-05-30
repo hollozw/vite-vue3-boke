@@ -1,8 +1,6 @@
 <template>
   <div>
     <div>子组件</div>
-    <div>{{ data }}</div>
-    <div><button @click="ZiFun">点击获取子组件数据</button></div>
   </div>
 </template>
 
