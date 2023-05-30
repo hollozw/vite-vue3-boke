@@ -6,14 +6,15 @@ import { onMounted, ref, reactive } from "vue";
 import store from "@/store";
 import { ElMessage } from "element-plus";
 import { SearchBokeList, getbokeList } from "@/utils/axios";
-import Canvas_cicly_Round from "@/utils/canvas/canvas_oneMethod";
+import Timer from "@/utils/canvas/Timer_canvas";
 import Home_search from "@/assets/imgs/Home_search.png";
 import Home_background from "@/assets/imgs/Home_background.jpg";
+import HomeURL from "@/assets/HomeImgs";
 const router = useRouter();
 let arrList = reactive<IVArrList>({
   value: [],
 });
-
+const url = "http://localhost:8888";
 const keyWord = ref("");
 const type = ref("");
 const anthor = ref("");
@@ -26,7 +27,7 @@ let canvasDraw = null;
 onMounted(() => {
   scrollBottom();
   bokeList();
-  // canvasFunction();
+  canvasFunction();
 });
 
 // method
@@ -100,32 +101,21 @@ function scrollBottom(): void {
 }
 
 function canvasFunction(): void {
-  const options_cicly = {
-    position: [
-      [0, 200],
-      [0, 200],
-    ],
-    size: 15,
-    max_x_v: 5,
-    max_y_v: 5,
-    numbers: 100,
-  };
-  const canvas = new Canvas_cicly_Round(
-    "canvas",
-    ".canvasPartical",
-    options_cicly
-  );
-  run();
-  function run() {
-    canvas.Cicly_action();
-    window.requestAnimationFrame(run);
-  }
+  const canvas = new Timer("canvas", false);
+}
+
+/**
+ * 随机函数
+ */
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //不含最大值，含最小值
 }
 </script>
 
 <template>
   <div class="canvasPartical">
-    <!-- <canvas id="canvas"></canvas> -->
     <div class="canvas">
       <img :src="Home_background" />
     </div>
@@ -175,9 +165,6 @@ function canvasFunction(): void {
           </div>
         </div>
       </div>
-      <!-- <h1 class="search-h1">SearchIng</h1> -->
-      <!--  -->
-
       <!-- list内容 -->
       <div class="right-list">
         <div class="bodys" ref="bodys">
@@ -205,14 +192,20 @@ function canvasFunction(): void {
                   }"
                 ></div>
               </div>
-              <div class="information-text-img"><img :src="item.image" /></div>
+              <div class="information-text-img">
+                <img
+                  :src="`${url}${HomeURL[getRandomInt(0, HomeURL.length)].url}`"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="ourself-right">
-      <div class="right-div">添加时钟功能</div>
+      <div class="right-div">
+        <canvas width="300" height="300" id="canvas"></canvas>
+      </div>
     </div>
   </div>
 </template>

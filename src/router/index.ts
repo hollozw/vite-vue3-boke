@@ -42,7 +42,6 @@ router.beforeEach((to, form) => {
 
 async function getUrl({ id, userName }) {
   const res = await getUserImg({ id, user_name: userName });
-  console.log(res.data.result.user_href);
   store.state.user_href =
     res.data.result.user_href ||
     "http://localhost:8888/src/assets/defaultImgs/1.png";

@@ -109,3 +109,26 @@ export function userImg(data) {
     data,
   });
 }
+
+/**
+ * 用户发表评论
+ */
+export function talk(data) {
+  return request({
+    url: "/boke/talk",
+    method: "POST",
+    data,
+  });
+}
+
+/**
+ * 获取博客列表nav
+ */
+export function getNavs(data) {
+  return request({
+    url: "/boke/gettalk",
+    method: "POST",
+    data,
+  });
+}
+ 

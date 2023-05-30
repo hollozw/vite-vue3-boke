@@ -1,21 +1,48 @@
 <script setup lang="ts">
 import "./index.sass";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, reactive, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { getbokeList } from "@/utils/axios";
+import { getbokeList, talk, getNavs, getUserImg } from "@/utils/axios";
+import { ElMessage } from "element-plus";
 import store from "@/store";
 let fileData = ref(""); // 获取文本内容
 let title = ref(""); // 获取标题内容
 let anther = ref(""); // 获取作者
 let Textvalue = ref(""); // 输入框内容
-let ourSelf = ref(true); // 是否为作者本人
+let giveLike = ref(0); // 用户获取赞量
 const route = useRoute();
 const router = useRouter();
+const code = ref(route.query.code);
+let talker = ref<Array<ITalker>>([]);
+
+interface ITalker {
+  user_name: string;
+  talks: string;
+  url: string;
+}
+
 onMounted(() => {
   getBokeList();
-  connectionSpeak();
+  getNav();
 });
 
+onBeforeUnmount(() => {
+  beforDestryTalker();
+});
+
+async function beforDestryTalker() {
+  const { id, userName } = store.state.user_data;
+  const user_talkArray = talker.value.map((item, index) => {
+    return { user_name: item.user_name, talks: item.talks };
+  });
+  const user_talk = JSON.stringify(user_talkArray);
+  const params = {
+    file_code: code.value,
+    user_talk,
+    give_like: giveLike.value,
+  };
+  const { data } = await talk(params);
+}
 /**
  * 获取该标题的内容信息
  */
@@ -33,12 +60,51 @@ async function getBokeList() {
 }
 
 /**
- * 发送评论
+ * 获取详情内容
  */
-
-async function connectionSpeak() {}
+async function getNav() {
+  const params = {
+    file_code: route.query.code,
+  };
+  const { data } = await getNavs(params);
+  if (data.message === "success") {
+    const talk: Array<ITalker> = JSON.parse(data.result.file_talk);
+    giveLike.value = data.result.give_like;
+    if (talk.length) {
+      talk.forEach(async (item, index) => {
+        const url = await getUserImg({ user_name: item.user_name });
+        talker.value[index] = {
+          user_name: item.user_name,
+          talks: item.talks,
+          url: url.data.result.user_href,
+        };
+      });
+    }
+  }
+}
+/**
+ * 点击发表评论
+ */
 async function speaking() {
-  console.log(Textvalue.value);
+  if (Textvalue.value) {
+    const { id, userName } = store.state.user_data;
+    const obj = {
+      user_name: userName,
+      talks: Textvalue.value,
+      url: store.state.user_href,
+    };
+    talker.value.push(obj);
+    beforDestryTalker();
+    Textvalue.value = "";
+  }
+}
+
+function addGiveLike() {
+  if (anther.value !== store.state.user_data.userName) {
+    giveLike.value++;
+  } else {
+    ElMessage.error("无法为自己点赞");
+  }
 }
 </script>
 
@@ -47,7 +113,7 @@ async function speaking() {
     <div class="detail-top">
       <div class="top-center">
         <div class="center-left">
-          <div class="left-img"><img src="#" /></div>
+          <div class="left-img"><img :src="store.state.user_href" /></div>
           <div
             class="left-gr"
             @click="
@@ -86,6 +152,12 @@ async function speaking() {
         <div class="nav-base">
           <div class="nav-title">
             <strong>{{ title }}</strong>
+            <el-button
+              type="primary"
+              class="get-title"
+              @click.once="addGiveLike"
+              >当前赞为：{{ giveLike }}</el-button
+            >
           </div>
           <div class="nav-name">作者：{{ anther }}</div>
         </div>
@@ -96,7 +168,7 @@ async function speaking() {
       <div class="speaking">
         <div class="tall-input">
           <div class="tall-speak-img">
-            <img src="#" />
+            <img :src="store.state.user_href" />
           </div>
           <el-input v-model="Textvalue" placeholder="请输入相关评论"></el-input>
           <button class="speaking-btn" @click="speaking">发布评论</button>
@@ -104,13 +176,19 @@ async function speaking() {
         <div class="tall-bottom">
           <div class="bottom-font"><strong>全部评论</strong></div>
           <div class="bottom-tall">
-            <div class="talker-list">
+            <div class="talker-list" v-for="item in talker">
               <div class="talk-img">
-                <img src="#" />
+                <img :src="item.url" />
               </div>
-              <div class="talk-name">admin：{{ ourSelf ? "(本人)" : "" }}</div>
+              <div class="talk-name">
+                {{ item.user_name }}：{{
+                  item.user_name === store.state.user_data.userName
+                    ? "(本人)"
+                    : ""
+                }}
+              </div>
               <div class="talk-nav">
-                <div title="nav">nav</div>
+                <div title="nav">{{ item.talks }}</div>
               </div>
             </div>
           </div>

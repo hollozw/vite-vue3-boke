@@ -42,17 +42,17 @@
       <!-- 卡片效果 -->
       <div class="card-left">
         <div class="left-block">
-          <div class="block-tou">
+          <!-- <div class="block-tou">
             <img src="@/assets/imgs/title.jpg" alt="无法加载该图片" />
-          </div>
+          </div> -->
           <div class="block-bgc">
             <img src="@/assets/imgs/longing-bgc.jpeg" />
           </div>
         </div>
         <div class="left-none">
-          <div class="none-tou">
+          <!-- <div class="none-tou">
             <img src="@/assets/imgs/tou_xiang.png" alt="" />
-          </div>
+          </div> -->
           <div class="none-bgc">
             <img src="@/assets/imgs/loadings-bgc.jpeg" />
           </div>
